@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: config-server #Nombre app para identificar en ecosistema Spring Boot
+  profiles:
+    active: native #perfil para usar almacenamiento local en lugar de repositorio git (por ej)
+  cloud:
+    config:
+      server:
+        native: #almacenamiento local
+          search-locations: classpath:/configurations #ruta donde estan los archivos de configuracion
+server:
+  port: 8888 #puerto 8888 config server
