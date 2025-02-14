@@ -1,0 +1,11 @@
+eureka:
+  instance:
+    hostname: localhost #hosting local por ahora
+  client:
+    registerWithEureka: false #para que el discovery server no se registre a si mismo en el mismo
+    fetchRegistry: false #no queremos traer el discovery server xq lo estamos configurando eureka a si mismo (solo en este caso es false)
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}/${server.port}/eureka/ #definimos url de discovery server usando host y port definidos
+
+server:
+  port: 8761
