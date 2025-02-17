@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      username: imavazq #mismas credenciales definidas para db levantada en docker
+      password: imavazq
+      host: localhost
+      port: 27017
+      database: customer #defino nombre de bd que quiero
+      authentication-database: admin
+
+server:
+  port: 8090 #asigno puerto cualquiera
