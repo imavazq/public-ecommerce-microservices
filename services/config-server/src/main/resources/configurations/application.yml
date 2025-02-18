@@ -1,0 +1,11 @@
+eureka:
+  instance:
+    hostname: localhost #del Eureka server
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+
+spring:
+  cloud:
+    config:
+      override.system-properties: false #para no sobreescribir config de cada modulo por este (hacemos que se mantenga y se herede esta config)

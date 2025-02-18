@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: product-service #nombre app que sera referenciado para llamar a este service (en config server por ej)
+  config:
+    import: optional:configserver:http://localhost:8888 #indicamos que traemos la configuracion del configserver
