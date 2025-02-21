@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerService implements ICustomerService {
+public class CustomerServiceImpl implements ICustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
 

@@ -3,7 +3,7 @@ spring:
     url: jdbc:postgresql://localhost:5434/product #db product
     username: imavazq
     password: imavazq
-    driver-class-name: org.postgresql.driver
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate #dejamos que Flyway cree la bd automaticamente al levantar

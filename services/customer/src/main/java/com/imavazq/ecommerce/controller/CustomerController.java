@@ -2,7 +2,7 @@ package com.imavazq.ecommerce.controller;
 
 import com.imavazq.ecommerce.domain.dto.CustomerRequestDTO;
 import com.imavazq.ecommerce.domain.dto.CustomerResponseDTO;
-import com.imavazq.ecommerce.service.impl.CustomerService;
+import com.imavazq.ecommerce.service.ICustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor //Genera constructor para atr definidos como final
 @RequestMapping("/api/v1/customer")
 public class CustomerController {
-    private final CustomerService customerService;
+    private final ICustomerService customerService;
 
     @PostMapping //retornamos unicamente el id
     public ResponseEntity<String> createCustomer(

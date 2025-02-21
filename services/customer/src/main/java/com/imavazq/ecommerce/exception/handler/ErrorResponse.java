@@ -1,4 +1,4 @@
-package com.imavazq.ecommerce.exception;
+package com.imavazq.ecommerce.exception.handler;
 
 import java.util.Map;
 
