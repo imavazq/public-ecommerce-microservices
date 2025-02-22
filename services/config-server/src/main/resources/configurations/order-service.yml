@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5434/order #db order
+    username: imavazq
+    password: imavazq
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create #No usamos flyway. Hibernate crea bd de cero cada vez que iniciamos app
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 8070
+
+application:
+  config: #definimos url para conectarnos a los otros microservicios
+    #Usamos puerto de API Gateway
+    customer-url: http://localhost:8222/api/v1/customers
+    product-url: http://localhost:8222/api/v1/products
+    payment-url: http://localhost:8222/api/v1/payments
