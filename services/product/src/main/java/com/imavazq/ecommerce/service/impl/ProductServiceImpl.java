@@ -1,8 +1,8 @@
 package com.imavazq.ecommerce.service.impl;
 
 import com.imavazq.ecommerce.domain.entity.Product;
-import com.imavazq.ecommerce.domain.dto.ProductPurchaseRequestDTO;
-import com.imavazq.ecommerce.domain.dto.ProductPurchaseResponseDTO;
+import com.imavazq.ecommerce.domain.dto.PurchasedProductRequestDTO;
+import com.imavazq.ecommerce.domain.dto.PurchasedProductResponseDTO;
 import com.imavazq.ecommerce.domain.dto.ProductRequestDTO;
 import com.imavazq.ecommerce.domain.dto.ProductResponseDTO;
 import com.imavazq.ecommerce.exception.ProductNotFoundException;
@@ -31,10 +31,10 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<ProductPurchaseResponseDTO> purchaseProducts(List<ProductPurchaseRequestDTO> requestedList) {
+    public List<PurchasedProductResponseDTO> purchaseProducts(List<PurchasedProductRequestDTO> requestedList) {
         //nos quedamos con los id's de los productos
         List<Integer> productIds = requestedList.stream()
-                                                .map(ProductPurchaseRequestDTO::productId)
+                                                .map(PurchasedProductRequestDTO::productId)
                                                 .toList();//lista inmutable List<Integer>
 
         //valido que los id's esten disponibles en la bd
@@ -47,17 +47,17 @@ public class ProductServiceImpl implements IProductService {
         }
 
         //reordeno la lista de productos pedidos por id para poder comparar 1 a 1 la cantidad solicitada con la disponible en bd
-        List<ProductPurchaseRequestDTO> requestedPurchaseProducts = requestedList.stream()
-                .sorted(Comparator.comparing(ProductPurchaseRequestDTO::productId))
+        List<PurchasedProductRequestDTO> requestedPurchaseProducts = requestedList.stream()
+                .sorted(Comparator.comparing(PurchasedProductRequestDTO::productId))
                 .toList();
 
         //inicio lista de productos comprados a devolver como response
-        var purchasedProducts = new ArrayList<ProductPurchaseResponseDTO>();
+        var purchasedProducts = new ArrayList<PurchasedProductResponseDTO>();
         //validamos que cantidad pedida este disponible
         //comparo 1 a 1 que cantidad disponible sea mayor o igual a la pedida
         for(int i = 0; i < storedProducts.size(); i++){
             Product product = storedProducts.get(i);
-            ProductPurchaseRequestDTO requestedProduct = requestedPurchaseProducts.get(i);
+            PurchasedProductRequestDTO requestedProduct = requestedPurchaseProducts.get(i);
 
             if(product.getAvailableQuantity() < requestedProduct.quantity()){
                 throw new ProductPurchaseException("Insufficient stock quantity for product with id: " + requestedProduct.productId());

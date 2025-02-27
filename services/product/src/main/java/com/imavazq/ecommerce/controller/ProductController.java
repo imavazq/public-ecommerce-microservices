@@ -1,7 +1,7 @@
 package com.imavazq.ecommerce.controller;
 
-import com.imavazq.ecommerce.domain.dto.ProductPurchaseRequestDTO;
-import com.imavazq.ecommerce.domain.dto.ProductPurchaseResponseDTO;
+import com.imavazq.ecommerce.domain.dto.PurchasedProductRequestDTO;
+import com.imavazq.ecommerce.domain.dto.PurchasedProductResponseDTO;
 import com.imavazq.ecommerce.domain.dto.ProductRequestDTO;
 import com.imavazq.ecommerce.domain.dto.ProductResponseDTO;
 import com.imavazq.ecommerce.service.IProductService;
@@ -27,8 +27,8 @@ public class ProductController {
     }
 
     @PostMapping("/purchase") //compra lista de productos
-    public ResponseEntity<List<ProductPurchaseResponseDTO>> purchaseProducts(
-            @RequestBody List<ProductPurchaseRequestDTO> requestedList
+    public ResponseEntity<List<PurchasedProductResponseDTO>> purchaseProducts(
+            @RequestBody List<PurchasedProductRequestDTO> requestedList
     ){
         return new ResponseEntity<>(productService.purchaseProducts(requestedList), HttpStatus.CREATED); //ver si paso http status 201
     }

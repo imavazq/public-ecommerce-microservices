@@ -2,7 +2,7 @@ package com.imavazq.ecommerce.mapper;
 
 import com.imavazq.ecommerce.domain.entity.Product;
 import com.imavazq.ecommerce.domain.entity.Category;
-import com.imavazq.ecommerce.domain.dto.ProductPurchaseResponseDTO;
+import com.imavazq.ecommerce.domain.dto.PurchasedProductResponseDTO;
 import com.imavazq.ecommerce.domain.dto.ProductRequestDTO;
 import com.imavazq.ecommerce.domain.dto.ProductResponseDTO;
 import org.springframework.stereotype.Component;
@@ -39,8 +39,8 @@ public class ProductMapper {
         );
     }
 
-    public ProductPurchaseResponseDTO toProductPurchaseResponseDTO(Product product, double quantity) {
-        return new ProductPurchaseResponseDTO(
+    public PurchasedProductResponseDTO toProductPurchaseResponseDTO(Product product, double quantity) {
+        return new PurchasedProductResponseDTO(
                 product.getId(),
                 product.getName(),
                 product.getDescription(),

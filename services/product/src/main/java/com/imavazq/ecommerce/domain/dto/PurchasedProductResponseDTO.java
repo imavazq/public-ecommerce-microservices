@@ -2,7 +2,7 @@ package com.imavazq.ecommerce.domain.dto;
 
 import java.math.BigDecimal;
 
-public record ProductPurchaseResponseDTO(
+public record PurchasedProductResponseDTO(
         Integer productId,
         String name,
         String description,

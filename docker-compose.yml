@@ -61,8 +61,37 @@ services:
 #        - 1080:1080
 #        - 1025:1025 #SMTP server
 
+  #CONFIGURACION KAFKA
+  zookeeper: #usado por Kafka para gestionar coordinacion entre brokers y almacenar metadatos
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment: #agregamos configuraciones para uso local (al deployar es necesario agregar otras)
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181 #puerto cliente default
+      ZOOKEEPER_TICK_TIME: 2000 #2 seg de tiempo base para realizar tareas internas
+    ports:
+      - 22181:2181
+    networks:
+      - microservices-net
+  kafka:
+    image: confluentinc/cp-kafka:latest #imagen oficial confluent
+    container_name: ms_kafka
+    ports:
+      - 9092:9092
+    depends_on:
+      - zookeeper #kafka broker necesita que se este ejecutando antes zookeeper
+    environment:
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 #una unica replica (local) para posicion inicial de lectura (offset) para consumidores del broker
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1 #una unica replica (local) para almacenamiento de estado de transacciones
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1 #nro replicas que deben estar sincronizadas para que transaccion sea valida
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181 #para la url usamos nombre de service declarado
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT #protocolo de seguridad para listeners PLAINTEXT (sin cifrado) para conex internas y externas
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092 #puerto para conexion a kafka
+    networks:
+      - microservices-net
+
 networks:
-  microservices-net:
+  microservices-net: #ecosistema microservicios
     driver: bridge
 
 volumes:

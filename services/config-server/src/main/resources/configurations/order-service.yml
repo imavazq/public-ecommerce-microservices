@@ -9,6 +9,15 @@ spring:
       ddl-auto: create #No usamos flyway. Hibernate crea bd de cero cada vez que iniciamos app
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092 #direccion server kafka broker
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer #convierte clave String serializada (formato binario)
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer #convierte value a enviar (OrderConfirmation) a tipo JSON
+      properties:
+        #producer necesita informar al consumer del topic cual es el objeto que le enviamos
+        #en formato JSON para mapearlo al objeto correspondiente
+        spring.json.type.mapping: orderConfirmation:com.imavazq.ecommerce.kafka.OrderConfirmation
 server:
   port: 8070
 
