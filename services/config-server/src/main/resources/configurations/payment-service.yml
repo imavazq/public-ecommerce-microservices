@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5434/payment #db payment
+    username: imavazq
+    password: imavazq
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create #No usamos flyway. Hibernate crea bd de cero cada vez que iniciamos app
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092 #direccion server kafka broker
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer #convierte clave String serializada (formato binario)
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer #convierte value a enviar (PaymentConfirmation) a tipo JSON
+      properties: #informa al consumer del topic cual es el objeto que le enviamos para que pueda mapearlo
+        spring.json.type.mapping: paymentConfirmation:com.imavazq.ecommerce.kafka.PaymentConfirmation
+
+server:
+  port: 8060
