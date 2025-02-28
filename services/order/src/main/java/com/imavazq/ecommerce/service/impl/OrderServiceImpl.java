@@ -1,18 +1,14 @@
 package com.imavazq.ecommerce.service.impl;
 
 import com.imavazq.ecommerce.client.CustomerClient;
-import com.imavazq.ecommerce.domain.dto.CustomerResponseDTO;
-import com.imavazq.ecommerce.domain.dto.OrderRequestDTO;
-import com.imavazq.ecommerce.domain.dto.OrderResponseDTO;
+import com.imavazq.ecommerce.client.PaymentClient;
+import com.imavazq.ecommerce.domain.dto.*;
 import com.imavazq.ecommerce.domain.entity.Order;
 import com.imavazq.ecommerce.exception.BusinessException;
 import com.imavazq.ecommerce.kafka.OrderConfirmation;
 import com.imavazq.ecommerce.mapper.OrderMapper;
-import com.imavazq.ecommerce.domain.dto.OrderLineRequestDTO;
 import com.imavazq.ecommerce.kafka.OrderProducer;
 import com.imavazq.ecommerce.client.ProductClient;
-import com.imavazq.ecommerce.domain.dto.PurchasedProductRequestDTO;
-import com.imavazq.ecommerce.domain.dto.PurchasedProductResponseDTO;
 import com.imavazq.ecommerce.repository.OrderRepository;
 import com.imavazq.ecommerce.service.IOrderService;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,6 +27,7 @@ public class OrderServiceImpl implements IOrderService {
     private final OrderMapper orderMapper;
     private final OrderLineServiceImpl orderLineService;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
 
     @Override
     public Integer createOrder(OrderRequestDTO orderRequestDTO) {
@@ -56,7 +53,16 @@ public class OrderServiceImpl implements IOrderService {
             ); //no nos quedamos con el id retornado por saveOrderLine en este caso porque no lo usamos
         }
 
-        //5-TODO empezamos proceso de pago (payment)
+        //5-empezamos proceso de pago (payment)
+        PaymentRequestDTO paymentRequest = new PaymentRequestDTO(
+                orderRequestDTO.amount(),
+                orderRequestDTO.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+
+        paymentClient.requestOrderPayment(paymentRequest);
 
         //6-enviamos la order confirmation a notification-microservice (Kafka)
         orderProducer.sendOrderConfirmation(
