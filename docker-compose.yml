@@ -54,12 +54,12 @@ services:
       #ME_CONFIG_BASICAUTH_USERNAME: imavazq
       #ME_CONFIG_BASICAUTH_PASSWORD: imavazq
 
-#    mail-dev: #Para envio de mails Notification service
-#      container_name: ms_mail_dev
-#      image: maildev/maildev
-#      ports:
-#        - 1080:1080
-#        - 1025:1025 #SMTP server
+  mail-dev: #Simula servidor SMTP y da una interfaz web para ver correos enviados (por Notification microservice)
+    container_name: ms_mail_dev
+    image: maildev/maildev
+    ports:
+      - 1080:1080 #puerto interfaz web correos
+      - 1025:1025 #puerto SMTP server
 
   #CONFIGURACION KAFKA
   zookeeper: #usado por Kafka para gestionar coordinacion entre brokers y almacenar metadatos
