@@ -10,16 +10,16 @@ spring:
   kafka:
     consumer: #notification es consumer
       bootstrap-servers: localhost:9092 #direccion server kafka broker
-      group-id: paymentGroup, orderGroup #grupos de consumidores al que pertenece consumer (consume payment-topic y order-topic)
+      group-id: paymentGroup,orderGroup #grupos de consumidores al que pertenece consumer (consume payment-topic y order-topic)
       auto-offset-reset: earliest #consumer lee todos los msg disponibles en el topic desde el principio
-      key-deserializer: org.apache.kafka.common.serialization.StringSerializer #deserializamos claves string
-      value-deserializer: org.springframework.kafka.support.serializer.JsonSerializer #deserializamos a java object el JSON object
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer #deserializamos claves string
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer #deserializamos a java object el JSON object
       properties:
         #como consumimos paquetes desconocidos para mapeo de mensaje consumido, especificamos que son confiables:
         spring.json.trusted.packages: 'com.imavazq.ecommerce.*'
         #indicamos como mapear los mensajes JSON a clases Java
         #indicamos ubicacion clases a mapear los mensajes consumidos orderConfirmation y paymentConfirmation
-        spring.json.type.mapping: orderConfirmation:com.imavazq.ecommerce.kafka.OrderConfirmation,paymentConfirmation:com.imavazq.ecommerce.kafka.PaymentConfirmation
+        spring.json.type.mapping: orderConfirmation:com.imavazq.ecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.imavazq.ecommerce.kafka.payment.PaymentConfirmation
   mail:
     host: localhost #usamos DevMail local como server SMTP
     port: 1025 #mismo que definido para DevMail en docker-compose.yml

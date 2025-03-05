@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class PaymentProducer {
     private final KafkaTemplate<String, PaymentConfirmation> kafkaTemplate;
 
-    @Bean
+    //enviar mensaje a topic
     public void sendPaymentConfirmation(PaymentConfirmation paymentConfirmation){
         log.info("Sending payment confirmation with body <{}>" + paymentConfirmation);
 
