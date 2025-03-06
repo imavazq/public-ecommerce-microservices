@@ -1,0 +1,30 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes: #definimos rutas a microservicios
+        - id: customer-service
+          uri: lb:http://CUSTOMER-SERVICE #lb para load balancing y CUSTOMER-SERVICE es el id del server customer registrado en Discovery sv
+          #usamos el Discovery server para evitar administracion manual de varias instancias (cual esta disponbile, etc)
+          predicates:
+            - Path=/api/v1/customers/** #cuando se reciba una request a este path, deriva a CUSTOMER-SERVICE
+        - id: order-service
+          uri: lb:http://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/orders/**
+        - id: order-lines-service #requests a order-lines tambien van a ser redirigidas a ORDER-SERVICE
+          uri: lb:http://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/order-lines/**
+        - id: product-service
+          uri: lb:http://PRODUCT-SERVICE
+          predicates:
+            - Path=/api/v1/products/**
+        - id: payment-service
+          uri: lb:http://PAYMENT-SERVICE
+          predicates:
+            - Path=/api/v1/payments/**
+server:
+  port: 8222
