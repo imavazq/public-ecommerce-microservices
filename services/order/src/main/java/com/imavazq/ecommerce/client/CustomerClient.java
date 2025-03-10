@@ -11,7 +11,7 @@ import java.util.Optional;
 //La definimos para poder consumir sus endpoints
 //Feign se encarga de la lógica para la llamada al endpoint
 @FeignClient(
-        name = "customer-service",
+        name = "CUSTOMER-SERVICE",
         url = "${application.config.customer-url}" //usamos url establecido en config-server
 )
 public interface CustomerClient {

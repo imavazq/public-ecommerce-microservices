@@ -16,7 +16,7 @@ public record PaymentRequestDTO(
         @NotNull(message = "Payment method is required.")
         PaymentMethod paymentMethod,
 
-        @NotEmpty(message = "Order is required.")
+        @NotNull(message = "Order is required.")
         Integer orderId,
 
         String orderReference,

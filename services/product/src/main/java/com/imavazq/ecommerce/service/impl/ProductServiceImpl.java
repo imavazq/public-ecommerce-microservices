@@ -12,6 +12,7 @@ import com.imavazq.ecommerce.repository.ProductRepository;
 import com.imavazq.ecommerce.service.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,6 +32,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
+    @Transactional(rollbackFor = ProductPurchaseException.class)
     public List<PurchasedProductResponseDTO> purchaseProducts(List<PurchasedProductRequestDTO> requestedList) {
         //nos quedamos con los id's de los productos
         List<Integer> productIds = requestedList.stream()
@@ -39,7 +41,7 @@ public class ProductServiceImpl implements IProductService {
 
         //valido que los id's esten disponibles en la bd
         //uso query JPA para que checkee si estan IN entre los ids cargados en la bd
-        List<Product> storedProducts = productRepository.findAllByIdInOrderById(requestedList);
+        List<Product> storedProducts = productRepository.findAllByIdInOrderById(productIds);
 
         //si tamaño listas no es el mismo -> exception
         if(productIds.size() != storedProducts.size()){
@@ -47,7 +49,7 @@ public class ProductServiceImpl implements IProductService {
         }
 
         //reordeno la lista de productos pedidos por id para poder comparar 1 a 1 la cantidad solicitada con la disponible en bd
-        List<PurchasedProductRequestDTO> requestedPurchaseProducts = requestedList.stream()
+        List<PurchasedProductRequestDTO> sortedRequestedPurchaseProducts = requestedList.stream()
                 .sorted(Comparator.comparing(PurchasedProductRequestDTO::productId))
                 .toList();
 
@@ -57,7 +59,7 @@ public class ProductServiceImpl implements IProductService {
         //comparo 1 a 1 que cantidad disponible sea mayor o igual a la pedida
         for(int i = 0; i < storedProducts.size(); i++){
             Product product = storedProducts.get(i);
-            PurchasedProductRequestDTO requestedProduct = requestedPurchaseProducts.get(i);
+            PurchasedProductRequestDTO requestedProduct = sortedRequestedPurchaseProducts.get(i);
 
             if(product.getAvailableQuantity() < requestedProduct.quantity()){
                 throw new ProductPurchaseException("Insufficient stock quantity for product with id: " + requestedProduct.productId());
