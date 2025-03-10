@@ -48,7 +48,7 @@ public class EmailService {
         variables.put("customerName", customerName);
         variables.put("totalAmount", amount);
         variables.put("orderReference", orderReference);
-        variables.put("purchasedProducts", purchasedProducts);
+        variables.put("products", purchasedProducts);
 
         Context context = new Context(); //clase Thymeleaf que contiene variables que se usan en la plantilla
         context.setVariables(variables);

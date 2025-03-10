@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     //consulta JPA devuelve productos ordenados por id que se encuentran en bd comparando ids pasados en la lista
-    List<Product> findAllByIdInOrderById(List<PurchasedProductRequestDTO> requestedList);
+    List<Product> findAllByIdInOrderById(List<Integer> requestedList);
 }

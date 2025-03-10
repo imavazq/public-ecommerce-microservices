@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 //Interfaz OpenFeign para consumir API REST Payment
 @FeignClient(
-        name = "product-service",
+        name = "PAYMENT-SERVICE",
         url = "${application.config.payment-url}" //usamos url establecido en config-server order-service.yml
 )
 public interface PaymentClient {

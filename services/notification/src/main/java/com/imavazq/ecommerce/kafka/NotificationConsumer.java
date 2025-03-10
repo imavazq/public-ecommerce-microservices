@@ -41,7 +41,7 @@ public class NotificationConsumer {
                 customerName,
                 orderConfirmation.totalAmount(),
                 orderConfirmation.orderReference(),
-                orderConfirmation.purchasedProducts()
+                orderConfirmation.products()
         );
     }
 
